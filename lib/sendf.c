@@ -5,7 +5,7 @@
  *                            | (__| |_| |  _ <| |___
  *                             \___|\___/|_| \_\_____|
  *
- * Copyright (C) 1998 - 2019, Daniel Stenberg, <daniel@haxx.se>, et al.
+ * Copyright (C) 1998 - 2020, Daniel Stenberg, <daniel@haxx.se>, et al.
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution. The terms
@@ -153,7 +153,8 @@ static void pre_receive_plain(struct connectdata *conn, int num)
      conn->recv[num] == Curl_recv_plain &&
      (!psnd->buffer || bytestorecv)) {
     const int readymask = Curl_socket_check(sockfd, CURL_SOCKET_BAD,
-                                            CURL_SOCKET_BAD, 0);
+                                            CURL_SOCKET_BAD, 0,
+                                            data->set.ignore_eintr);
     if(readymask != -1 && (readymask & CURL_CSELECT_IN) != 0) {
       /* Have some incoming data */
       if(!psnd->buffer) {
